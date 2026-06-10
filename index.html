@@ -25,12 +25,14 @@ function resize() {
   canvas.style.width = innerWidth + 'px'; canvas.style.height = innerHeight + 'px';
   if (gameState === 'playing') layoutLevel();
 }
-addEventListener('resize', resize); resize();
-
 let gameState = 'title', level = 1, score = 0, streak = 0;
 let pieces = [], slots = [], dragPiece = null, dragOff = {x:0,y:0};
 let feedTimer = 0, feedType = '', feedText = '', particles = [];
 let totalSlots = 0, filledSlots = 0;
+
+// resize() reads gameState, so it must run after the declarations above
+// or the whole script dies in the TDZ.
+addEventListener('resize', resize); resize();
 
 const SHAPE_DEFS = [
   { name: 'Circle', draw: (x,y,s,c) => { ctx.beginPath(); ctx.arc(x,y,s*0.4,0,Math.PI*2); ctx.fill(); ctx.stroke(); }},
